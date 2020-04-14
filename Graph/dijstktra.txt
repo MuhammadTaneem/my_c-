@@ -1,0 +1,76 @@
+
+#include<bits/stdc++.h>
+using namespace std;
+#define MX 110
+struct node{
+    int value;
+    int cost;
+};
+vector <node> graph[MX];
+bool vis[MX];
+int dist[MX];
+
+class cmp{
+public:
+    bool operator()(node&a,node &b)
+    {
+        if(a.cost>b.cost)return true;
+        return false;
+    }
+};
+void reset(){
+    for (int i = 0; i < MX; i++){
+        graph[i].clear();
+        vis[i] = 0;
+        dist[i] = INT_MAX;
+    }
+}
+void dijkstra(int source)
+{
+    priority_queue<node,vector<node>,cmp>pq;
+    pq.push({source,0});
+    while(!pq.empty())
+    {
+        node current =pq.top();
+        pq.pop();
+        int val=current.value;
+        int cost=current.cost;
+
+        if(vis[val]==1)continue;
+        dist[val]=cost;
+        vis[val]=1;
+        for(int i=0;i<graph[val].size();i++)
+        {
+            int nxt=graph[val][i].value;
+            int nxtcost=graph[val][i].cost;
+            if(vis[nxt]==0)
+            {
+                pq.push({nxt,cost+nxtcost});
+            }
+        }
+    }
+}
+int main()
+{
+    reset();
+    int nodes, edges;
+    cin >> nodes >> edges;
+
+    for (int i = 1; i <= edges; i++){
+        int u, v,w;
+        cin >> u >> v>>w;
+        graph[u].push_back({v,w});
+    }
+
+    int source;
+    cin >> source;
+
+    dijkstra(source);
+
+    cout << "From node " << source << endl;
+    for (int i = 1; i <= nodes; i++){
+        cout << "Distance of " << i << " is : " << dist[i] << endl;
+    }
+
+    return 0;
+}

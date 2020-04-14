@@ -1,0 +1,37 @@
+
+#include <bits/stdc++.h>
+using namespace std;
+
+bool prime[10000];
+void seive(int n)
+{
+    memset(prime,true,n);
+    for(int i=4;i<=n;i+=2)
+    {
+        prime[i]=false;
+    }
+    int con=sqrt(n)+1;
+    for(int i=3;i<=con;i+=2)
+    {
+        if(prime[i])
+        {
+            int j=i*2;
+            for(j;j<=n;j=j+i)
+            {
+                prime[j]=false;
+            }
+        }
+    }
+
+}
+int main()
+{
+    seive(50);
+    for(int i=1;i<=50;i++){
+        if(prime[i]){
+            cout<<i<<" ";
+        }
+
+    }
+    return 0;
+}
